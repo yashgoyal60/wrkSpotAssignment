@@ -25,7 +25,7 @@ class CustomerCreationTest {
 	}
 
 	@Test
-	public void sendAlertEvent() throws IOException {
+	public void customerCreation_Pass() throws IOException {
 		String fileName = "CustomerCreationRequest.json";
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		Customer customer = objectMapper.readValue(resourceLoader.getResource("classpath:assets/" + fileName).getInputStream(), Customer.class);
