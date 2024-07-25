@@ -53,7 +53,8 @@ class CustomerCreationTest {
 		Customer customer = objectMapper.readValue(resourceLoader.getResource("classpath:assets/" + fileName).getInputStream(), Customer.class);
 		Mockito.when(kafkaCustomerProducer.sendCustomerCreationEvent(List.of(customer))).thenReturn(Mockito.anyBoolean());
 		Mockito.when(customerRepository.saveAll(List.of(customer))).thenReturn(List.of(customer));
-		assertEquals(customerService.createCustomer(List.of(customer)).size(), 0);
+		List<Customer> result = customerService.createCustomer(List.of(customer));
+		assertEquals(result.size(), 1);
 
 	}
 
