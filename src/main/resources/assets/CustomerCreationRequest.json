@@ -1,0 +1,25 @@
+{
+  "firstName": "yashad",
+  "lastName": "asdasd",
+  "customerId": "1231231",
+  "age": 30,
+  "spendingLimit": 450000.001244,
+  "mobileNumber": "123123123",
+  "address": [{
+    "type": "asd",
+    "address1": "asd",
+    "address2": "asd",
+    "city": "asd",
+    "state": "asd",
+    "zipCode": "asd"
+  },
+    {
+      "type": "asd2",
+      "address1": "asd2",
+      "address2": "asd2",
+      "city": "asd2",
+      "state": "asd2",
+      "zipCode": "asd2"
+    }]
+
+}
