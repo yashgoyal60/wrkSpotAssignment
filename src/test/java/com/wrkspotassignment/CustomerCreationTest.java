@@ -3,23 +3,15 @@ package com.wrkspotassignment;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wrkspotassignment.model.dto.Customer;
-import com.wrkspotassignment.repository.AddressRepository;
-import com.wrkspotassignment.repository.CustomerRepository;
-import com.wrkspotassignment.service.CustomerService;
-import com.wrkspotassignment.service.kafka.KafkaCustomerProducer;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 @SpringBootTest
-class AlertMonitorApplicationTests {
+class CustomerCreationTest {
 
 	@Autowired
 	ObjectMapper objectMapper;
