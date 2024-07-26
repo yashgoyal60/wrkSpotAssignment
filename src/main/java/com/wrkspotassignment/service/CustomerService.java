@@ -1,6 +1,7 @@
 package com.wrkspotassignment.service;
 
 import com.wrkspotassignment.exceptions.CustomerCreationException;
+import com.wrkspotassignment.model.dto.Address;
 import com.wrkspotassignment.model.dto.Customer;
 import com.wrkspotassignment.repository.AddressRepository;
 import com.wrkspotassignment.repository.CustomerRepository;
@@ -11,10 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static com.wrkspotassignment.constants.ErrorMessages.CAUGHT_EXCEPTION;
 import static com.wrkspotassignment.constants.ErrorMessages.CUSTOMER_LIST_SAVE_RECEIVED;
@@ -40,6 +39,11 @@ public class CustomerService {
         log.info(CUSTOMER_LIST_RECEIVED + customerList.size());
         List<Customer> savedCustomerList = Collections.emptyList();
         try {
+            for (Customer customer: customerList) {
+                for (Address address :  customer.getAddress()) {
+                    address.setCustomers(customer);
+                }
+            }
              savedCustomerList = saveCustomers(customerList);
              kafkaCustomerProducer.sendCustomerCreationEvent(savedCustomerList);
 
@@ -49,5 +53,17 @@ public class CustomerService {
         }
         return savedCustomerList;
     }
+
+    public List<Customer> getCustomerByFilters(String firstName, String city, String state) {
+        if(!firstName.isEmpty())
+            return customerRepository.getCustomerByFirstName(firstName);
+        if(!city.isEmpty())
+            return customerRepository.getCustomerByCity(city);
+        if(!state.isEmpty())
+             return customerRepository.getCustomerByState(state);
+        return customerRepository.findAll();
+
+    }
+
 
 }

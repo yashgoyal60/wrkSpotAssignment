@@ -18,10 +18,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-        @PostMapping("create")
-    public List<Customer> createCustomer(@RequestBody List<Customer> customerList) {
+    @PostMapping("create")
+    public List<Customer> createCustomers(@RequestBody List<Customer> customerList) {
         return customerService.createCustomer(customerList);
 
+    }
+
+    @GetMapping("get")
+    public List<Customer> getCustomers(@RequestParam(required = false, defaultValue = "") String firstName, @RequestParam(required = false, defaultValue = "") String city,
+                                       @RequestParam(required = false, defaultValue = "") String state) {
+        return customerService.getCustomerByFilters(firstName, city, state);
     }
 
 

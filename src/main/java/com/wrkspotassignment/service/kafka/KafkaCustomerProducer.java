@@ -1,5 +1,6 @@
 package com.wrkspotassignment.service.kafka;
 
+import com.wrkspotassignment.exceptions.CustomerCreationException;
 import com.wrkspotassignment.model.dto.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static com.wrkspotassignment.constants.ErrorMessages.CAUGHT_EXCEPTION;
+import static com.wrkspotassignment.constants.ErrorMessages.KAFKA_FAILED_EXCEPTION;
+import static com.wrkspotassignment.constants.Messages.CUSTOMER_EVENT_SENT;
 
 @Service
 public class KafkaCustomerProducer {
@@ -30,21 +35,14 @@ public class KafkaCustomerProducer {
     }
 
     public boolean sendCustomerCreationEvent(List<Customer> customerList) throws ExecutionException, InterruptedException, TimeoutException {
-
-//        CompletableFuture<SendResult<String, List<Customer>>> future = customerKafkaTemplate.send(kafkaCustomerTopic, customerList);
-        SendResult<String, List<Customer>> sendResult = customerKafkaTemplate.send(kafkaCustomerTopic, customerList).get(2, TimeUnit.SECONDS);
-//        future.whenComplete((result, ex) -> {
-//            if (ex == null) {
-//                System.out.println("Asd");
-////                handleSuccess(data);
-//            }
-//            else {
-//                System.out.println("Asd");
-////                handleFailure(data, record, ex);
-//            }
-//        });
-        log.info("Send customerList event sent via Kafka size: {}", customerList.size());
-//        log.info(future.get().toString());
+        try {
+            SendResult<String, List<Customer>> sendResult = customerKafkaTemplate.send(kafkaCustomerTopic, customerList).get(2, TimeUnit.SECONDS);
+            log.info(CUSTOMER_EVENT_SENT, customerList.size());
+        } catch (Exception e) {
+            log.error(KAFKA_FAILED_EXCEPTION);
+            log.error(CAUGHT_EXCEPTION +  e);
+            throw new CustomerCreationException(KAFKA_FAILED_EXCEPTION);
+        }
         return true;
     }
 }

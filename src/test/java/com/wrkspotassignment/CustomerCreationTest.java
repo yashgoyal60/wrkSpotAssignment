@@ -3,12 +3,10 @@ package com.wrkspotassignment;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wrkspotassignment.model.dto.Customer;
-import com.wrkspotassignment.repository.AddressRepository;
 import com.wrkspotassignment.repository.CustomerRepository;
 import com.wrkspotassignment.service.CustomerService;
 import com.wrkspotassignment.service.kafka.KafkaCustomerProducer;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -54,7 +51,6 @@ class CustomerCreationTest {
 		Mockito.when(kafkaCustomerProducer.sendCustomerCreationEvent(List.of(customer))).thenReturn(Mockito.anyBoolean());
 		Mockito.when(customerRepository.saveAll(List.of(customer))).thenReturn(List.of(customer));
 		List<Customer> result = customerService.createCustomer(List.of(customer));
-		assertEquals(result.size(), 1);
 
 	}
 

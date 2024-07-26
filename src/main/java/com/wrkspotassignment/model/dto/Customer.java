@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,8 +14,10 @@ import java.util.List;
 @Getter@Setter
 public class Customer implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) @Column(name = "customer_id")
     private Long customerId;
+
+
 
     private String mobileNumber;
     private String firstName;
@@ -22,8 +25,8 @@ public class Customer implements Serializable {
     private Double spendingLimit;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Address> address;
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> address = new ArrayList<>();
 
 
 
