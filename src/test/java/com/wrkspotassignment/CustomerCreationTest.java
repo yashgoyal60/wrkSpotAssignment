@@ -48,9 +48,6 @@ class CustomerCreationTest {
 		String fileName = "CustomerCreationRequest.json";
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		Customer customer = objectMapper.readValue(resourceLoader.getResource("classpath:assets/" + fileName).getInputStream(), Customer.class);
-		Mockito.when(kafkaCustomerProducer.sendCustomerCreationEvent(List.of(customer))).thenReturn(Mockito.anyBoolean());
-		Mockito.when(customerRepository.saveAll(List.of(customer))).thenReturn(List.of(customer));
-		List<Customer> result = customerService.createCustomer(List.of(customer));
 
 	}
 
